@@ -24,7 +24,6 @@ app.get('authors/:id', async (req, res) => {
 })
 
 // Criando um método post para adicionar um novo escritor
-
 app.post('/authors', async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
   if(!author.isValid(first_name, middle_name, last_name)) {
@@ -33,6 +32,14 @@ app.post('/authors', async (req, res) => {
   await author.addAuthor(first_name, middle_name, last_name);
   return res.status(200).json({ message: 'Autor criado com sucesso!' })
 });
+
+app.delete('/authors', async(req, res) => {
+  const { id } = req.body;
+  const fullName = await author.getAuthorById(id).fullName
+  if(!author.isValidId(id)) return res.status(400).json({ message: 'Id Inválido' });
+  await author.deleteAuthorById(id)
+  return res.status(200).json({ message: `${fullName} - id: ${id} - deletado com sucesso!` })
+})
 
 // Retorna todos os livros
 app.get('/books', async(_req, res) => {
