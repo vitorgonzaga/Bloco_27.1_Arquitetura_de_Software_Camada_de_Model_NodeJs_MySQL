@@ -33,13 +33,18 @@ app.post('/authors', async (req, res) => {
   return res.status(200).json({ message: 'Autor criado com sucesso!' })
 });
 
-app.delete('/authors', async(req, res) => {
+// Deletando pelo id enviado no body da requisição e customizando a messagem para aparecer o fullName do autor deletado
+app.delete('/authors', async (req, res) => {
   const { id } = req.body;
-  const fullName = await author.getAuthorById(id).fullName
+  const fullNameAuthor = await author.getAuthorById(id);
+  if(!fullNameAuthor) return res.status(404).json({ message: "Not Found" });
+  const { fullName } = fullNameAuthor;
   if(!author.isValidId(id)) return res.status(400).json({ message: 'Id Inválido' });
   await author.deleteAuthorById(id)
   return res.status(200).json({ message: `${fullName} - id: ${id} - deletado com sucesso!` })
 })
+
+// echo '{"id": "6"}' | http DELETE :3000/authors
 
 // Retorna todos os livros
 app.get('/books', async(_req, res) => {
