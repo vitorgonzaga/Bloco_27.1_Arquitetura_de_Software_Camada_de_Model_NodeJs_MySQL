@@ -39,7 +39,7 @@ const isValid = (first_name, middle_name, last_name) => {
   return true;
 }
 
-const addAuthor = async (firstName, middleName, lastName) => connection.execute(
+const addAuthor = async (firstName, middleName, lastName) => await connection.execute(
   'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
   [firstName, middleName, lastName]
 );
@@ -50,7 +50,7 @@ const isValidId = (id) => {
 }
 
 
-const deleteAuthorById = async (id) => connection.execute(
+const deleteAuthorById = async (id) => await connection.execute(
   'DELETE FROM model_example.authors WHERE id = ?', [id]
 );
 
