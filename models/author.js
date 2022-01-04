@@ -1,7 +1,8 @@
 const connection = require('./connection');
 
-const getFullNameAuthor = ({firstName, middleName, lastName}) => {
-  const fullName = [ firstName, middleName, lastName ].filter((string) => string).join(" "); // "(string) => string" faz com que o filtro desconsidere strings inexistentes (nulas)
+const getFullNameAuthor = (firstName, middleName, lastName) => {
+  // const fullName = [ firstName, middleName, lastName ].filter((string) => string).join(" "); // "(string) => string" faz com que o filtro desconsidere strings inexistentes (nulas)
+  const fullName = [ firstName, middleName, lastName ].filter(Boolean).join(" ");
   return fullName
 }
 
@@ -26,6 +27,7 @@ const getAll = async () => {
 const getAuthorById = async (id) => {
   const [author] = await connection.execute('select id, first_name, middle_name, last_name from authors where id = ?', [id])
   if(!author) return null
+  // console.log('author from getAuthorById: ', author);
   return author.map(serialize)[0];
 }
 
@@ -43,13 +45,13 @@ const addAuthor = async (firstName, middleName, lastName) => connection.execute(
 );
 
 const isValidId = (id) => {
-  if(!id || typeof(id) !== 'number') return false;
+  if(!id) return false;
   return true;
 }
 
 
 const deleteAuthorById = async (id) => connection.execute(
-  'DELETE id FROM model_example.authors WHERE id = ?', [id]
+  'DELETE FROM model_example.authors WHERE id = ?', [id]
 );
 
 module.exports = {
