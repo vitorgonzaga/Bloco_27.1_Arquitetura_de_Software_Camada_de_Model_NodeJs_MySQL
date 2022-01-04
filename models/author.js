@@ -38,8 +38,14 @@ const isValid = (first_name, middle_name, last_name) => {
 }
 
 const addAuthor = async (firstName, middleName, lastName) => connection.execute(
-  'INSERTO INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
+  'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
   [firstName, middleName, lastName]
 );
 
-module.exports = { getAll, serialize, getAuthorById, addAuthor }
+// const deleteAuthorById = async (id) => connection.execute(
+//   'DELETE id FROM model_example.authors WHERE id = ?', [id]
+// );
+
+module.exports = { getAll, serialize, getAuthorById, addAuthor, isValid, deleteAuthorById }
+
+// echo '{ "first_name": "Vitor", "middle_name": "Gonzaga", "last_name": "Ferreira" }' | http POST :3000/authors
