@@ -29,5 +29,9 @@ const getAuthorById = async (id) => {
   return author.map(serialize)[0];
 }
 
+const addAuthor = async (firstName, middleName, lastName) => connection.execute(
+  'INSERTO INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
+  [firstName, middleName, lastName]
+);
 
-module.exports = { getAll, serialize, getAuthorById }
+module.exports = { getAll, serialize, getAuthorById, addAuthor }
