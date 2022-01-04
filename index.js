@@ -21,6 +21,17 @@ app.get('authors/:id', async (req, res) => {
   return res.status(200).json(author);
 })
 
+// Criando um método post para adicionar um novo escritor
+
+app.post('/authors', async (req, res) => {
+  const { first_name, middle_name, last_name } = req.body;
+  // if(!author.isvalid(first_name, middle_name, last_name)) {
+  //   return res.status(400).json({ message: 'Dados inválidos' })
+  // }
+  await author.addAuthor(first_name, middle_name, last_name);
+  return res.status(200).json({ message: 'Autor criado com sucesso!' })
+});
+
 // Retorna todos os livros
 app.get('/books', async(_req, res) => {
   const allBooks = await books.getAll();
