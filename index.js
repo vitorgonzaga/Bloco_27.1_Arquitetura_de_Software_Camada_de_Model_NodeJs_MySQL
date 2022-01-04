@@ -27,9 +27,9 @@ app.get('authors/:id', async (req, res) => {
 
 app.post('/authors', async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
-  // if(!author.isvalid(first_name, middle_name, last_name)) {
-  //   return res.status(400).json({ message: 'Dados inválidos' })
-  // }
+  if(!author.isValid(first_name, middle_name, last_name)) {
+    return res.status(400).json({ message: 'Dados inválidos' })
+  }
   await author.addAuthor(first_name, middle_name, last_name);
   return res.status(200).json({ message: 'Autor criado com sucesso!' })
 });
