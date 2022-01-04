@@ -11,7 +11,12 @@ const getBooksByAuthorId = async(id) => {
   return rows;
 }
 
+const addBook = async (title, id) => {
+  await connection.execute('INSERT INTO model_example.books (title, author_id) VALUES (?, ?)', [title, id]);
+}
+
 module.exports = {
   getAll,
-  getBooksByAuthorId
+  getBooksByAuthorId,
+  addBook
 };
