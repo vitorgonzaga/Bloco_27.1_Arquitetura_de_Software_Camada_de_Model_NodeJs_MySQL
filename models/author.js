@@ -42,10 +42,24 @@ const addAuthor = async (firstName, middleName, lastName) => connection.execute(
   [firstName, middleName, lastName]
 );
 
-// const deleteAuthorById = async (id) => connection.execute(
-//   'DELETE id FROM model_example.authors WHERE id = ?', [id]
-// );
+const isValidId = (id) => {
+  if(!id || typeof(id) !== 'number') return false;
+  return true;
+}
 
-module.exports = { getAll, serialize, getAuthorById, addAuthor, isValid, deleteAuthorById }
+
+const deleteAuthorById = async (id) => connection.execute(
+  'DELETE id FROM model_example.authors WHERE id = ?', [id]
+);
+
+module.exports = {
+  getAll,
+  serialize,
+  getAuthorById,
+  addAuthor,
+  isValid,
+  deleteAuthorById,
+  isValidId
+}
 
 // echo '{ "first_name": "Vitor", "middle_name": "Gonzaga", "last_name": "Ferreira" }' | http POST :3000/authors
