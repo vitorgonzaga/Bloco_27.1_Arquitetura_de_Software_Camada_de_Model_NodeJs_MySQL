@@ -1,14 +1,8 @@
 const connection = require('./connection');
 
-const authorEdit = ({id, firstName, middleName, lastName}) => {
+const getFullNameAuthor = ({firstName, middleName, lastName}) => {
   const fullName = [ firstName, middleName, lastName ].filter((string) => string).join(" "); // "(string) => string" faz com que o filtro desconsidere strings inexistentes (nulas)
-  return {
-    id,
-    firstName,
-    middleName,
-    lastName,
-    fullName
-  }
+  return fullName
 }
 
 const serialize = (authorData) => {
@@ -16,7 +10,8 @@ const serialize = (authorData) => {
     id: authorData.id,
     firstName: authorData.first_name,
     middleName: authorData.middle_name,
-    lastName: authorData.last_name
+    lastName: authorData.last_name,
+    fullName: getFullNameAuthor(authorData.first_name, authorData.middle_name, authorData.last_name)
   }
 }
 
@@ -25,8 +20,14 @@ const serialize = (authorData) => {
 const getAll = async () => {
   const [authors] = await connection.execute('SELECT id, first_name, middle_name, last_name from authors');
 
-  return authors.map(serialize).map(authorEdit);
+  return authors.map(serialize);
 };
 
+const getAuthorById = async (id) => {
+  const [author] = await connection.execute('select id, first_name, middle_name, last_name from authors where id = ?', [id])
+  if(!author) return null
+  return author.map(serialize)[0];
+}
 
-module.exports = { getAll }
+
+module.exports = { getAll, serialize, getAuthorById }
