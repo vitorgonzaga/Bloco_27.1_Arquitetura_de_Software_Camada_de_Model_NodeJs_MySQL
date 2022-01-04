@@ -59,4 +59,18 @@ app.get('/books/:id', async (req, res) => {
   return res.status(200).json(booksById);
 })
 
+app.post('/books', async (req, res) => {
+  const { title, author_id } = req.body;
+  if(!title) return res.status(400).json({ message: 'Título não pode ser vazio' });
+  if(title.length < 3) return res.status(400).json({ message: 'Título precisa ter pelo menos três caracteres' });
+  if(!author_id) return res.status(400).json({ message: 'o campo author_id não pode ser vazio' });
+  const existsAuthor = await books.getBooksByAuthorId(author_id);
+  if(existsAuthor) {
+    await books.addBook(title, author_id)
+    return res.status(201).json({ message: 'Livro criado com sucesso!' })
+  };
+})
+
+// echo '{ "title": "A volta dos que não foram", "author_id": "5" }' | http POST :3000/books
+
 app.listen(port, () => { console.log(`Ouvindo a porta ${port}`) })
