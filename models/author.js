@@ -29,6 +29,14 @@ const getAuthorById = async (id) => {
   return author.map(serialize)[0];
 }
 
+const isValid = (first_name, middle_name, last_name) => {
+  if(!first_name || typeof(first_name) !== 'string') return false;
+  if(!last_name || typeof(last_name) !== 'string') return false;
+  if(middle_name && typeof(middle_name) !== 'string') return false; // Tabela verdade conjução só é verdadeira quanto as 2 proposições forem verdadeiras, ou seja, só será impeditivo quando houver middle_name diferente de string
+
+  return true;
+}
+
 const addAuthor = async (firstName, middleName, lastName) => connection.execute(
   'INSERTO INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
   [firstName, middleName, lastName]
