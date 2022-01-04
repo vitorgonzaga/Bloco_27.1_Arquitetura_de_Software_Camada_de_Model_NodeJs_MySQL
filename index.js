@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express(); // cria uma instancia do express
 const port = 3000;
@@ -5,7 +6,8 @@ const port = 3000;
 const author = require('./models/author');
 const books = require('./models/books');
 
-app.listen(port, () => { console.log(`Ouvindo a porta ${port}`) })
+// Nos possibilita desestruturar informações que vem através do body das requisições
+app.use(bodyParser.json());
 
 // Retorna todos os autores
 app.get('/authors', async (_req, res) => {
@@ -44,3 +46,5 @@ app.get('/books/:id', async (req, res) => {
   if(!booksById) return res.status(404).json({ message: 'Not found' });
   return res.status(200).json(booksById);
 })
+
+app.listen(port, () => { console.log(`Ouvindo a porta ${port}`) })
